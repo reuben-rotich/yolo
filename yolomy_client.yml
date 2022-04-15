@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: yolomy-client-service
+  labels:
+    name: yolomy-client
+spec:
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+  type: NodePort
+  selector:
+    name: yolomy-client
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yolomy-client-deployment
+  labels:
+    app: yolomy-client
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: yolomy-client
+  template:
+    metadata:
+      labels:
+        app: yolomy-client
+    spec:
+      containers:
+        - name: yolomy-client
+          image: rbomett/yolo_client
+          ports:
+            - containerPort: 3000

@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: yolomy-backend-service
+  labels:
+    name: yolomy-backend
+spec:
+  ports:
+    - port: 80
+      targetPort: 5000
+      protocol: TCP
+  type: NodePort
+  selector:
+    name: yolomy-backend
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yolomy-backend-deployment
+  labels:
+    app: yolomy-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: yolomy-backend
+  template:
+    metadata:
+      labels:
+        app: yolomy-backend
+    spec:
+      containers:
+        - name: yolomy-backend
+          image: ammlyf/yolo_backend
+          ports:
+            - containerPort: 5000
